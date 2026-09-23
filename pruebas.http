@@ -1,0 +1,10 @@
+### Crear una matrícula
+POST http://localhost:3000/api/matriculas
+Content-Type: application/json
+
+{
+  "id_alu": 1,
+  "id_sec": 1,
+  "anio": 2027,
+  "registrado_por": 2
+}
