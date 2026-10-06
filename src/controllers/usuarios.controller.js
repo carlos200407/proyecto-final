@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const { conectarDB, sql } = require('../config/db');
 
 // GET /api/usuarios - trae todos los usuarios (sin exponer el password_hash)
@@ -31,16 +32,14 @@ async function obtenerUsuarioPorId(req, res) {
 }
 
 // POST /api/usuarios - crea un usuario nuevo (director crea personal, o un padre se auto-registra)
-// NOTA: password_hash aquí se guarda tal cual llega. Cuando conectes el login real,
-// usa bcrypt para hashear la contraseña ANTES de llamar a este endpoint (nunca guardes
-// contraseñas en texto plano). Ej: const hash = await bcrypt.hash(password, 10);
+// Recibe "password" en texto plano y lo hashea aquí mismo antes de guardarlo.
 async function crearUsuario(req, res) {
     try {
-        const { nombre, apellido, correo, password_hash, rol } = req.body;
+        const { nombre, apellido, correo, password, rol } = req.body;
 
-        if (!nombre || !apellido || !correo || !password_hash || !rol) {
+        if (!nombre || !apellido || !correo || !password || !rol) {
             return res.status(400).json({
-                error: 'Faltan campos obligatorios: nombre, apellido, correo, password_hash, rol'
+                error: 'Faltan campos obligatorios: nombre, apellido, correo, password, rol'
             });
         }
 
@@ -48,6 +47,12 @@ async function crearUsuario(req, res) {
         if (!rolesValidos.includes(rol)) {
             return res.status(400).json({ error: `rol debe ser uno de: ${rolesValidos.join(', ')}` });
         }
+
+        if (password.length < 6) {
+            return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+        }
+
+        const password_hash = await bcrypt.hash(password, 10);
 
         const pool = await conectarDB();
         const resultado = await pool.request()

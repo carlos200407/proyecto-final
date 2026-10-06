@@ -1,5 +1,6 @@
 ### Crear una matrícula
-POST http://localhost:3000/api/matriculas
+POST http://localhost
+:3000/api/matriculas
 Content-Type: application/json
 
 {
