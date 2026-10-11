@@ -6,10 +6,11 @@ const {
     crearNota,
     actualizarNota
 } = require('../controllers/notas.controller');
+const { verificarToken, verificarRol } = require('../middleware/auth.middleware');
 
-router.get('/matricula/:id_mat', obtenerNotasDeMatricula);
-router.get('/matricula/:id_mat/promedios', obtenerPromediosDeMatricula);
-router.post('/', crearNota);
-router.put('/:id', actualizarNota);
+router.get('/matricula/:id_mat', verificarToken, obtenerNotasDeMatricula);
+router.get('/matricula/:id_mat/promedios', verificarToken, obtenerPromediosDeMatricula);
+router.post('/', verificarToken, verificarRol('Docente'), crearNota);
+router.put('/:id', verificarToken, verificarRol('Docente'), actualizarNota);
 
 module.exports = router;

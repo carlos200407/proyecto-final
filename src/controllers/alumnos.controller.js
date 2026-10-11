@@ -1,6 +1,5 @@
 const { conectarDB, sql } = require('../config/db');
 
-// GET /api/alumnos - trae todos los alumnos
 async function obtenerAlumnos(req, res) {
     try {
         const pool = await conectarDB();
@@ -11,7 +10,6 @@ async function obtenerAlumnos(req, res) {
     }
 }
 
-// GET /api/alumnos/:id - trae un alumno específico
 async function obtenerAlumnoPorId(req, res) {
     try {
         const { id } = req.params;
@@ -29,7 +27,6 @@ async function obtenerAlumnoPorId(req, res) {
     }
 }
 
-// POST /api/alumnos - crea un alumno nuevo
 async function crearAlumno(req, res) {
     try {
         const { nombre, apellido, dni, id_pad } = req.body;

@@ -1,6 +1,5 @@
 const { conectarDB, sql } = require('../config/db');
 
-// GET /api/padres
 async function obtenerPadres(req, res) {
     try {
         const pool = await conectarDB();
@@ -11,7 +10,6 @@ async function obtenerPadres(req, res) {
     }
 }
 
-// GET /api/padres/:id
 async function obtenerPadrePorId(req, res) {
     try {
         const { id } = req.params;
@@ -29,7 +27,6 @@ async function obtenerPadrePorId(req, res) {
     }
 }
 
-// POST /api/padres - crea el registro de padre, vinculado a un usuario ya creado (rol='Padre')
 async function crearPadre(req, res) {
     try {
         const { nombre, apellido, dni, correo, id_usu } = req.body;
@@ -60,7 +57,6 @@ async function crearPadre(req, res) {
     }
 }
 
-// GET /api/padres/:id/alumnos - hijos de este padre (útil para el portal del padre)
 async function obtenerHijosDePadre(req, res) {
     try {
         const { id } = req.params;

@@ -1,6 +1,5 @@
 const { conectarDB, sql } = require('../config/db');
 
-// GET /api/asistencias/matricula/:id_mat - historial de asistencia de un alumno
 async function obtenerAsistenciasDeMatricula(req, res) {
     try {
         const { id_mat } = req.params;
@@ -14,7 +13,6 @@ async function obtenerAsistenciasDeMatricula(req, res) {
     }
 }
 
-// POST /api/asistencias - el docente marca la asistencia del día
 async function crearAsistencia(req, res) {
     try {
         const { id_mat, fecha, estado } = req.body;

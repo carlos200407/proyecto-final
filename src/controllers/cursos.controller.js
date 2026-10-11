@@ -1,6 +1,5 @@
 const { conectarDB, sql } = require('../config/db');
 
-// GET /api/cursos
 async function obtenerCursos(req, res) {
     try {
         const pool = await conectarDB();
@@ -11,7 +10,6 @@ async function obtenerCursos(req, res) {
     }
 }
 
-// POST /api/cursos - el director crea un curso
 async function crearCurso(req, res) {
     try {
         const { nombre, grado } = req.body;
@@ -34,7 +32,6 @@ async function crearCurso(req, res) {
     }
 }
 
-// POST /api/cursos/asignar - el director asigna un curso a una sección con su docente (SECCION_CURSO)
 async function asignarCursoASeccion(req, res) {
     try {
         const { id_sec, id_cur, docente_id } = req.body;
@@ -61,7 +58,6 @@ async function asignarCursoASeccion(req, res) {
     }
 }
 
-// GET /api/cursos/seccion/:id_sec - qué cursos y docentes tiene una sección
 async function obtenerCursosDeSeccion(req, res) {
     try {
         const { id_sec } = req.params;

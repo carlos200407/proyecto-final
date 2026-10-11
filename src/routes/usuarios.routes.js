@@ -5,7 +5,7 @@ const { verificarToken, verificarRol } = require('../middleware/auth.middleware'
 
 router.get('/', verificarToken, obtenerUsuarios);
 router.get('/:id', verificarToken, obtenerUsuarioPorId);
-router.post('/', crearUsuario); // sin protección: la usa tanto el director (crear personal) como el auto-registro de padres
+router.post('/', crearUsuario);
 router.patch('/:id/desactivar', verificarToken, verificarRol('Director'), desactivarUsuario);
 
 module.exports = router;

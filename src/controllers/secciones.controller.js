@@ -1,6 +1,5 @@
 const { conectarDB, sql } = require('../config/db');
 
-// GET /api/secciones
 async function obtenerSecciones(req, res) {
     try {
         const pool = await conectarDB();
@@ -11,7 +10,6 @@ async function obtenerSecciones(req, res) {
     }
 }
 
-// POST /api/secciones - el director crea un salón nuevo
 async function crearSeccion(req, res) {
     try {
         const { grado, letra } = req.body;

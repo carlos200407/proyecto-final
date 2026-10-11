@@ -1,6 +1,5 @@
 const { conectarDB, sql } = require('../config/db');
 
-// GET /api/notas/matricula/:id_mat - todas las notas de un alumno (por matrícula)
 async function obtenerNotasDeMatricula(req, res) {
     try {
         const { id_mat } = req.params;
@@ -19,7 +18,6 @@ async function obtenerNotasDeMatricula(req, res) {
     }
 }
 
-// GET /api/notas/matricula/:id_mat/promedios - promedio por curso (media aritmética simple)
 async function obtenerPromediosDeMatricula(req, res) {
     try {
         const { id_mat } = req.params;
@@ -38,7 +36,6 @@ async function obtenerPromediosDeMatricula(req, res) {
     }
 }
 
-// POST /api/notas - el docente registra una nota para un criterio
 async function crearNota(req, res) {
     try {
         const { id_mat, id_crit, valor } = req.body;
@@ -69,7 +66,6 @@ async function crearNota(req, res) {
     }
 }
 
-// PUT /api/notas/:id - el docente corrige una nota ya puesta
 async function actualizarNota(req, res) {
     try {
         const { id } = req.params;

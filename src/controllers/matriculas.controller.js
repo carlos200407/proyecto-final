@@ -1,6 +1,5 @@
 const { conectarDB, sql } = require('../config/db');
 
-// GET /api/matriculas - trae todas las matrículas con datos del alumno y sección
 async function obtenerMatriculas(req, res) {
     try {
         const pool = await conectarDB();
@@ -19,7 +18,6 @@ async function obtenerMatriculas(req, res) {
     }
 }
 
-// GET /api/matriculas/:id
 async function obtenerMatriculaPorId(req, res) {
     try {
         const { id } = req.params;
@@ -37,7 +35,6 @@ async function obtenerMatriculaPorId(req, res) {
     }
 }
 
-// POST /api/matriculas - crea una matrícula nueva
 async function crearMatricula(req, res) {
     try {
         const { id_alu, id_sec, anio, registrado_por } = req.body;
@@ -60,7 +57,6 @@ async function crearMatricula(req, res) {
 
         res.status(201).json(resultado.recordset[0]);
     } catch (error) {
-        // Si viola el UNIQUE(id_alu, anio), SQL Server manda un mensaje específico
         if (error.message.includes('UQ_matricula_alumno_anio')) {
             return res.status(409).json({ error: 'Este alumno ya está matriculado ese año' });
         }

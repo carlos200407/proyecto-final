@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const { conectarDB, sql } = require('../config/db');
 
-// GET /api/usuarios - trae todos los usuarios (sin exponer el password_hash)
 async function obtenerUsuarios(req, res) {
     try {
         const pool = await conectarDB();
@@ -13,7 +12,6 @@ async function obtenerUsuarios(req, res) {
     }
 }
 
-// GET /api/usuarios/:id
 async function obtenerUsuarioPorId(req, res) {
     try {
         const { id } = req.params;
@@ -31,8 +29,6 @@ async function obtenerUsuarioPorId(req, res) {
     }
 }
 
-// POST /api/usuarios - crea un usuario nuevo (director crea personal, o un padre se auto-registra)
-// Recibe "password" en texto plano y lo hashea aquí mismo antes de guardarlo.
 async function crearUsuario(req, res) {
     try {
         const { nombre, apellido, correo, password, rol } = req.body;
@@ -74,7 +70,6 @@ async function crearUsuario(req, res) {
     }
 }
 
-// PATCH /api/usuarios/:id/desactivar - el director desactiva una cuenta (no la borra)
 async function desactivarUsuario(req, res) {
     try {
         const { id } = req.params;

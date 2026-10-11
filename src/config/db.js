@@ -8,7 +8,7 @@ const config = {
     port: parseInt(process.env.DB_PORT),
     database: process.env.DB_DATABASE,
     options: {
-        encrypt: false,          // Docker no usa certificado SSL
+        encrypt: false,
         trustServerCertificate: true
     }
 };

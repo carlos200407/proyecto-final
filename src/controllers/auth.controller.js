@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { conectarDB, sql } = require('../config/db');
 
-// POST /api/auth/login
 async function login(req, res) {
     try {
         const { correo, password } = req.body;
@@ -18,8 +17,6 @@ async function login(req, res) {
 
         const usuario = resultado.recordset[0];
 
-        // Mensaje genérico a propósito: no reveles si fue el correo o la contraseña
-        // lo que falló, por seguridad (evita que alguien "adivine" correos válidos).
         if (!usuario) {
             return res.status(401).json({ error: 'Correo o contraseña incorrectos' });
         }
@@ -54,11 +51,10 @@ async function login(req, res) {
     }
 }
 
-// PUT /api/auth/cambiar-password (requiere estar logueado - usa el middleware verificarToken)
 async function cambiarPassword(req, res) {
     try {
         const { password_nueva } = req.body;
-        const { id_usu } = req.usuario; // esto lo pone el middleware verificarToken
+        const { id_usu } = req.usuario;
 
         if (!password_nueva || password_nueva.length < 6) {
             return res.status(400).json({ error: 'La nueva contraseña debe tener al menos 6 caracteres' });

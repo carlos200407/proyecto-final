@@ -1,6 +1,5 @@
 const { conectarDB, sql } = require('../config/db');
 
-// GET /api/criterios/curso/:id_cur - los criterios configurados para un curso
 async function obtenerCriteriosDeCurso(req, res) {
     try {
         const { id_cur } = req.params;
@@ -14,7 +13,6 @@ async function obtenerCriteriosDeCurso(req, res) {
     }
 }
 
-// POST /api/criterios - el director configura un criterio nuevo (Examen, Práctica, Tarea...)
 async function crearCriterio(req, res) {
     try {
         const { id_cur, nombre } = req.body;

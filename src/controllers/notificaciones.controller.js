@@ -1,6 +1,5 @@
 const { conectarDB, sql } = require('../config/db');
 
-// GET /api/notificaciones/alumno/:id_alu - notificaciones de un alumno (para el portal del padre)
 async function obtenerNotificacionesDeAlumno(req, res) {
     try {
         const { id_alu } = req.params;
@@ -14,7 +13,6 @@ async function obtenerNotificacionesDeAlumno(req, res) {
     }
 }
 
-// POST /api/notificaciones - Administración envía una amonestación/citación
 async function crearNotificacion(req, res) {
     try {
         const { id_alu, tipo, mensaje, enviado_por } = req.body;
@@ -41,7 +39,6 @@ async function crearNotificacion(req, res) {
                     VALUES (@id_alu, @tipo, @mensaje, @enviado_por)`);
 
         res.status(201).json(resultado.recordset[0]);
-        // TODO: aquí más adelante conectas el envío real por correo (ej. con nodemailer)
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
