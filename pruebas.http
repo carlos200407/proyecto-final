@@ -1,11 +1,75 @@
-### Crear una matrícula
-POST http://localhost
-:3000/api/matriculas
+### 1. Crear usuario
+POST http://localhost:3000/api/usuarios
 Content-Type: application/json
+
+{
+  "nombre": "Roberto",
+  "apellido": "Fernández",
+  "correo": "director2@colegio.pe",
+  "password": "temporal123",
+  "rol": "Director"
+}
+
+### 2. Login
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "correo": "director2@colegio.pe",
+  "password": "temporal123"
+}
+
+### 3. Crear matrícula (usa el token del login)
+POST http://localhost:3000/api/matriculas
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
 
 {
   "id_alu": 1,
   "id_sec": 1,
-  "anio": 2027,
-  "registrado_por": 2
+  "anio": 2028,
+  "registrado_por": 1
+}
+
+### 6. Crear un docente de prueba
+POST http://localhost:3000/api/usuarios
+Content-Type: application/json
+
+{
+  "nombre": "Juan",
+  "apellido": "Ramírez",
+  "correo": "docente3@colegio.pe",
+  "password": "docente123",
+  "rol": "Docente"
+}
+
+### 7. Login como docente
+# @name loginDocente
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "correo": "docente3@colegio.pe",
+  "password": "docente123"
+}
+
+### 8. El docente intenta crear una sección (debe dar 403)
+POST http://localhost:3000/api/secciones
+Content-Type: application/json
+Authorization: Bearer {{loginDocente.response.body.token}}
+
+{
+  "grado": "4°",
+  "letra": "A"
+}
+
+### 9. El director crea la misma sección (debe dar 201)
+POST http://localhost:3000/api/secciones
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+  "grado": "4°",
+  "letra": "A"
 }

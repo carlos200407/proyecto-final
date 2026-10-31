@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap');
+
+:root {
+  --tinta: #12263f;
+  --azul: #2457c5;
+  --azul-oscuro: #1b429a;
+  --fondo: #f4f7fb;
+  --blanco: #ffffff;
+  --borde: #c9d3e0;
+  --texto: #1d2b3c;
+  --texto-suave: #4a5b70;
+  --error: #b3261e;
+  --error-fondo: #fcedec;
+
+  --fuente-titulos: 'Source Serif 4', Georgia, serif;
+  --fuente-texto: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--texto);
+  background: var(--fondo);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+  color: var(--tinta);
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+}

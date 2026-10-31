@@ -1,0 +1,179 @@
+.auth {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  min-height: 100vh;
+}
+
+/* ---------- Panel izquierdo: cuaderno ---------- */
+.marca {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 48px 48px 96px;
+  color: #f2f5fa;
+  background-color: var(--tinta);
+  background-image:
+    linear-gradient(
+      to right,
+      transparent 63px,
+      rgba(226, 110, 110, 0.5) 63px,
+      rgba(226, 110, 110, 0.5) 65px,
+      transparent 65px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 39px,
+      rgba(255, 255, 255, 0.09) 39px,
+      rgba(255, 255, 255, 0.09) 40px
+    );
+}
+
+.marca-logo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.marca-lema {
+  margin: 0;
+  max-width: 14em;
+  font-family: var(--fuente-titulos);
+  font-size: 2.25rem;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+/* ---------- Panel derecho: formulario ---------- */
+.auth-panel {
+  display: flex;
+  align-items: center;
+  padding: 48px;
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth-form h1 {
+  font-size: 1.875rem;
+  line-height: 1.2;
+}
+
+.auth-ayuda {
+  margin: 8px 0 28px;
+  color: var(--texto-suave);
+}
+
+.campo {
+  margin-bottom: 18px;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.campo input {
+  width: 100%;
+  padding: 10px 12px;
+  color: var(--texto);
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+}
+
+.campo input:focus-visible {
+  outline: 3px solid rgba(36, 87, 197, 0.35);
+  outline-offset: 0;
+  border-color: var(--azul);
+}
+
+.error-caja {
+  margin: 0 0 18px;
+  padding: 10px 12px;
+  color: var(--error);
+  background: var(--error-fondo);
+  border-radius: 6px;
+  font-size: 0.9375rem;
+}
+
+.boton-principal {
+  width: 100%;
+  padding: 12px 16px;
+  color: #ffffff;
+  font-weight: 600;
+  background: var(--azul);
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.boton-principal:hover:not(:disabled) {
+  background: var(--azul-oscuro);
+}
+
+.boton-principal:focus-visible {
+  outline: 3px solid rgba(36, 87, 197, 0.45);
+  outline-offset: 2px;
+}
+
+.boton-principal:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.boton-enlace {
+  display: block;
+  margin: 18px 0 0;
+  padding: 0;
+  color: var(--texto-suave);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.boton-enlace:hover {
+  color: var(--tinta);
+}
+
+/* ---------- Pantallas angostas ---------- */
+@media (max-width: 800px) {
+  .auth {
+    grid-template-columns: 1fr;
+  }
+
+  .marca {
+    gap: 16px;
+    padding: 28px 24px 28px 64px;
+    background-image:
+      linear-gradient(
+        to right,
+        transparent 39px,
+        rgba(226, 110, 110, 0.5) 39px,
+        rgba(226, 110, 110, 0.5) 41px,
+        transparent 41px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 39px,
+        rgba(255, 255, 255, 0.09) 39px,
+        rgba(255, 255, 255, 0.09) 40px
+      );
+  }
+
+  .marca-lema {
+    font-size: 1.375rem;
+  }
+
+  .auth-panel {
+    align-items: flex-start;
+    padding: 32px 24px 48px;
+  }
+}
