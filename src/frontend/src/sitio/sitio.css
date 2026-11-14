@@ -1,0 +1,365 @@
+/* Estilos de la página pública. Todo cuelga de .sitio para no chocar con el sistema. */
+
+html:has(.sitio) {
+  scroll-padding-top: 64px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.sitio) {
+    scroll-behavior: smooth;
+  }
+}
+
+.sitio {
+  --s-azul: #1f5fbf;
+  --s-tinta: #12315f;
+  --s-celeste: #eaf4fc;
+  --s-celeste-2: #7fc1ea;
+  --s-borde: #bfd9ee;
+  --s-suave: #3d5a80;
+
+  min-height: 100vh;
+  color: var(--s-tinta);
+  background: #ffffff;
+  font-family: var(--fuente-texto);
+  line-height: 1.5;
+}
+
+.sitio h1,
+.sitio h2,
+.sitio h3 {
+  margin: 0;
+  color: var(--s-tinta);
+}
+
+.sitio p {
+  margin: 0;
+}
+
+.sitio a {
+  color: var(--s-azul);
+}
+
+.sitio a:hover {
+  color: var(--s-tinta);
+}
+
+.sitio :focus-visible {
+  outline: 3px solid var(--s-azul);
+  outline-offset: 2px;
+}
+
+.s-suave {
+  color: var(--s-suave);
+}
+
+.s-wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ---------- Botones ---------- */
+.sitio .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 20px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.sitio .btn-p {
+  color: #ffffff;
+  background: var(--s-azul);
+}
+
+.sitio .btn-p:hover {
+  color: #ffffff;
+  background: var(--s-tinta);
+}
+
+.sitio .btn-s {
+  color: var(--s-azul);
+  background: #ffffff;
+  border: 2px solid var(--s-azul);
+}
+
+.sitio .btn-s:hover {
+  color: var(--s-tinta);
+  background: var(--s-celeste);
+}
+
+.sitio .btn-blanco,
+.sitio .btn-blanco:hover {
+  color: var(--s-tinta);
+  background: #ffffff;
+}
+
+.sitio .btn-blanco:hover {
+  background: var(--s-celeste);
+}
+
+.sitio .s-btn-chico {
+  min-height: 40px;
+  padding: 0 14px;
+}
+
+.sitio .s-ancho {
+  width: 100%;
+}
+
+/* ---------- Cabecera y menú ---------- */
+.s-cab {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #ffffff;
+  border-bottom: 1px solid var(--s-borde);
+}
+
+.s-cab-fila {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 64px;
+}
+
+.s-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  font-size: 11px;
+  color: var(--s-suave);
+  border: 2px dashed var(--s-azul);
+  border-radius: 8px;
+}
+
+.s-nombre {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--fuente-titulos);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.s-centro {
+  text-align: center;
+}
+
+.s-hamb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  color: var(--s-tinta);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.s-velo {
+  position: fixed;
+  top: 64px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0;
+  background: rgba(18, 49, 95, 0.5);
+  border: 0;
+  cursor: default;
+}
+
+.s-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(18, 49, 95, 0.25);
+}
+
+.sitio .s-enlace {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 20px;
+  font-weight: 500;
+  color: var(--s-tinta);
+  text-decoration: none;
+  border-bottom: 1px solid var(--s-celeste);
+}
+
+.sitio .s-enlace:hover {
+  background: var(--s-celeste);
+}
+
+.s-menu-pie {
+  padding: 16px 20px;
+}
+
+.sitio .s-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ---------- Secciones ---------- */
+.s-hero {
+  padding: 48px 0 56px;
+  background: var(--s-celeste);
+}
+
+.s-hero-chico {
+  padding: 40px 0 44px;
+}
+
+.s-etiqueta {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.s-h1 {
+  max-width: 14em;
+  font-size: clamp(2rem, 7vw, 3rem);
+  line-height: 1.1;
+}
+
+.s-lead {
+  max-width: 34em;
+  margin-top: 16px;
+  font-size: 1.125rem;
+}
+
+.s-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.s-sec {
+  padding: 48px 0;
+}
+
+.s-fondo {
+  background: var(--s-celeste);
+}
+
+.s-h2 {
+  font-size: 1.875rem;
+}
+
+.s-h3 {
+  font-size: 1.375rem;
+}
+
+.s-h3-chico {
+  font-size: 1.25rem;
+}
+
+.s-intro {
+  max-width: 38em;
+  margin: 8px 0 24px;
+}
+
+.s-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.s-card {
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid var(--s-borde);
+  border-radius: 12px;
+}
+
+.s-texto-card {
+  margin-top: 8px;
+}
+
+.s-datos {
+  margin: 8px 0;
+}
+
+.s-cifra {
+  margin-top: 12px;
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--s-azul);
+}
+
+.s-bajo-cifra {
+  margin: 4px 0 16px;
+}
+
+/* Aviso azul que lleva a los cursos técnicos */
+.s-aviso {
+  margin-top: 16px;
+  padding: 16px;
+  color: #ffffff;
+  background: var(--s-azul);
+  border-radius: 10px;
+}
+
+.s-aviso-titulo {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.s-aviso-texto {
+  margin: 4px 0 12px;
+  color: var(--s-celeste);
+}
+
+/* ---------- Pie ---------- */
+.s-pie {
+  color: var(--s-celeste);
+  background: var(--s-tinta);
+}
+
+.s-pie-interior {
+  padding-top: 48px;
+  padding-bottom: 32px;
+}
+
+.sitio .s-blanco {
+  color: #ffffff;
+}
+
+.s-pie-grid {
+  margin-top: 24px;
+}
+
+.s-pie-etiqueta {
+  font-size: 0.8125rem;
+  color: var(--s-celeste-2);
+}
+
+.s-derechos {
+  margin-top: 32px;
+  padding-top: 16px;
+  font-size: 0.875rem;
+  color: var(--s-borde);
+  border-top: 1px solid var(--s-suave);
+}
+
+.s-pie-aviso {
+  margin-bottom: 16px;
+}

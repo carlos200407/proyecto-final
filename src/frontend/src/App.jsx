@@ -1,55 +1,40 @@
-import { useState } from 'react';
-import Login from './pages/Login';
-import CambiarPassword from './pages/CambiarPassword';
-import Inicio from './pages/Inicio';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Portada from './sitio/Portada';
+import CursosTecnicos from './sitio/CursosTecnicos';
+import Acceso from './pages/Acceso';
 
-const CLAVE_SESION = 'simae_sesion';
-
-function leerSesion() {
-  try {
-    const guardada = localStorage.getItem(CLAVE_SESION);
-    return guardada ? JSON.parse(guardada) : null;
-  } catch {
-    return null;
-  }
-}
+// Pilotos de los paneles (datos de ejemplo, sin conexión al backend todavía)
+import PadreMatricula from './panel/padre/Matricula';
+import PadreConfirmar from './panel/padre/Confirmar';
+import PadreNotas from './panel/padre/Notas';
+import DocenteNotas from './panel/docente/Notas';
+import DirectorUsuarios from './panel/director/Usuarios';
+import DirectorDashboard from './panel/director/Dashboard';
 
 export default function App() {
-  const [sesion, setSesion] = useState(leerSesion);
+  return (
+    <Routes>
+      {/* Página pública del colegio */}
+      <Route path="/" element={<Portada />} />
+      <Route path="/cursos-tecnicos" element={<CursosTecnicos />} />
 
-  function iniciarSesion(nuevaSesion) {
-    localStorage.setItem(CLAVE_SESION, JSON.stringify(nuevaSesion));
-    setSesion(nuevaSesion);
-  }
+      {/* Sistema (login) */}
+      <Route path="/ingresar" element={<Acceso />} />
 
-  function cerrarSesion() {
-    localStorage.removeItem(CLAVE_SESION);
-    setSesion(null);
-  }
+      {/* Padres */}
+      <Route path="/padre/matricula" element={<PadreMatricula />} />
+      <Route path="/padre/confirmar" element={<PadreConfirmar />} />
+      <Route path="/padre/notas" element={<PadreNotas />} />
 
-  function marcarPasswordCambiada() {
-    iniciarSesion({
-      ...sesion,
-      usuario: { ...sesion.usuario, primer_ingreso: false },
-    });
-  }
+      {/* Docente */}
+      <Route path="/docente/notas" element={<DocenteNotas />} />
 
-  // 1) Sin sesión: pantalla de login
-  if (!sesion) {
-    return <Login onLogin={iniciarSesion} />;
-  }
+      {/* Director */}
+      <Route path="/director" element={<Navigate to="/director/dashboard" replace />} />
+      <Route path="/director/usuarios" element={<DirectorUsuarios />} />
+      <Route path="/director/dashboard" element={<DirectorDashboard />} />
 
-  // 2) Cuenta nueva con contraseña temporal: obligar a cambiarla
-  if (sesion.usuario.primer_ingreso) {
-    return (
-      <CambiarPassword
-        token={sesion.token}
-        onListo={marcarPasswordCambiada}
-        onSalir={cerrarSesion}
-      />
-    );
-  }
-
-  // 3) Sesión normal
-  return <Inicio usuario={sesion.usuario} onSalir={cerrarSesion} />;
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
 }

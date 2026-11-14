@@ -1,0 +1,119 @@
+/* Estilos de los paneles (padres, docente, director). Todo cuelga de .panel. */
+.panel {
+  --p-azul: #1f5fbf;
+  --p-tinta: #12315f;
+  --p-celeste: #eaf4fc;
+  --p-celeste-2: #7fc1ea;
+  --p-borde: #bfd9ee;
+  --p-suave: #3d5a80;
+  min-height: 100vh;
+  color: var(--p-tinta);
+  background: #fff;
+  font-family: var(--fuente-texto);
+  line-height: 1.5;
+}
+.panel h1, .panel h2, .panel h3 {
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+  margin: 0;
+  color: var(--p-tinta);
+}
+.panel a { color: var(--p-azul); }
+.panel a:hover { color: var(--p-tinta); }
+.panel :focus-visible { outline: 3px solid var(--p-azul); outline-offset: 2px; }
+.panel .suave { color: var(--p-suave); }
+
+/* Botones */
+.panel .pbtn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0 20px; border-radius: 8px; border: 0;
+  font: inherit; font-weight: 600; text-decoration: none; cursor: pointer; box-sizing: border-box;
+}
+.panel .pbtn-p { background: var(--p-azul); color: #fff; }
+.panel .pbtn-p:hover { background: var(--p-tinta); color: #fff; }
+.panel .pbtn-s { background: #fff; color: var(--p-azul); border: 2px solid var(--p-azul); }
+.panel .pbtn-s:hover { background: var(--p-celeste); color: var(--p-tinta); }
+.panel .pbtn-d { background: #fff; color: var(--p-tinta); border: 2px solid var(--p-borde); min-height: 36px; padding: 0 12px; font-size: 14px; }
+.panel .pbtn-d:hover { background: var(--p-celeste); }
+.panel .pbtn-ancho { width: 100%; }
+
+/* Tarjetas, campos, etiquetas */
+.panel .tarjeta { background: #fff; border: 1px solid var(--p-borde); border-radius: 12px; padding: 20px; }
+.panel .campo { display: block; margin: 0 0 14px; }
+.panel .campo span { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.panel .campo input, .panel .campo select {
+  width: 100%; box-sizing: border-box; min-height: 44px; padding: 0 12px;
+  border: 1px solid #7fa6cc; border-radius: 8px; font: inherit; color: var(--p-tinta); background: #fff;
+}
+.panel .etiqueta { display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: 13px; font-weight: 600; background: var(--p-celeste); color: var(--p-tinta); border: 1px solid var(--p-borde); }
+.panel .etiqueta-ok { background: var(--p-azul); color: #fff; border-color: var(--p-azul); }
+.panel .etiqueta-no { background: #fff; color: var(--p-tinta); border: 2px solid var(--p-tinta); }
+
+/* Pantallas de celular */
+.panel .movil-cab { display: flex; align-items: center; gap: 10px; height: 64px; padding: 0 16px; box-sizing: border-box; border-bottom: 1px solid var(--p-borde); background: #fff; }
+.panel .movil-cab .titulo { font-family: var(--fuente-titulos); font-weight: 600; font-size: 18px; flex: 1; min-width: 0; text-align: center; }
+.panel .movil-cab .volver { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; font-weight: 600; text-decoration: none; }
+.panel .movil-cuerpo { max-width: 520px; margin: 0 auto; }
+.panel .franja { background: var(--p-celeste); padding: 20px 20px 24px; }
+.panel .franja h1 { font-size: 28px; line-height: 1.15; margin-top: 4px; }
+.panel .pasos { display: flex; gap: 6px; margin-top: 12px; }
+.panel .pasos span { flex: 1; height: 6px; border-radius: 3px; background: var(--p-borde); }
+.panel .pasos span.ok { background: var(--p-azul); }
+.panel .seccion { padding: 20px; }
+.panel .seccion h2 { font-size: 20px; margin: 0 0 12px; }
+.panel .fila-doble { display: flex; gap: 8px; margin-bottom: 14px; }
+.panel .fila-doble .pbtn { flex: 1; }
+.panel .resumen-fila { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--p-celeste); }
+.panel .exito { text-align: center; padding: 28px 20px; }
+.panel .exito .tilde { width: 56px; height: 56px; margin: 0 auto 12px; border-radius: 50%; background: var(--p-azul); display: flex; align-items: center; justify-content: center; }
+
+/* Notas del padre */
+.panel .kpis2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.panel .kpis2 > div { background: #fff; border-radius: 12px; padding: 14px; }
+.panel .grande { display: block; font-family: var(--fuente-titulos); font-size: 32px; color: var(--p-azul); line-height: 1.1; }
+.panel .aviso { border-left: 4px solid var(--p-azul); background: var(--p-celeste); border-radius: 8px; padding: 12px 14px; margin-bottom: 24px; }
+.panel details.curso { border: 1px solid var(--p-borde); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+.panel details.curso summary { display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 8px 16px; cursor: pointer; list-style: none; }
+.panel details.curso summary::-webkit-details-marker { display: none; }
+.panel details.curso .detalle { padding: 4px 16px 12px; }
+.panel .nota-fila { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid var(--p-celeste); }
+
+/* Escritorio: menú lateral + contenido */
+.panel .escritorio { display: flex; flex-wrap: wrap; min-height: 100vh; }
+.panel .lateral { flex: 0 0 220px; background: var(--p-tinta); color: var(--p-celeste); padding: 20px 0; }
+.panel .lateral a, .panel .lateral button.salir {
+  display: flex; align-items: center; width: 100%; min-height: 44px; padding: 0 20px; box-sizing: border-box;
+  color: var(--p-celeste); background: none; border: 0; font: inherit; font-weight: 500; text-decoration: none; cursor: pointer; text-align: left;
+}
+.panel .lateral a:hover, .panel .lateral button.salir:hover { background: var(--p-azul); color: #fff; }
+.panel .lateral a.activo { background: var(--p-azul); color: #fff; font-weight: 600; }
+.panel .lateral .marca { padding: 0 20px 20px; }
+.panel .lateral .marca b { display: block; font-family: var(--fuente-titulos); font-size: 20px; color: #fff; line-height: 1.1; }
+.panel .lateral .marca small { display: block; font-size: 13px; color: var(--p-celeste-2); margin-top: 4px; }
+.panel .contenido { flex: 999 1 560px; min-width: 0; padding: 28px 32px; }
+.panel .contenido-cab { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 20px; }
+.panel .contenido-cab h1 { font-size: 30px; }
+@media (max-width: 640px) { .panel .contenido { padding: 20px 16px; } .panel .lateral { flex-basis: 100%; } }
+
+/* Tablas */
+.panel .caja-tabla { overflow-x: auto; border: 1px solid var(--p-borde); border-radius: 12px; }
+.panel table { border-collapse: collapse; width: 100%; }
+.panel th { text-align: left; font-size: 13px; color: var(--p-suave); padding: 8px 10px; border-bottom: 2px solid var(--p-borde); }
+.panel td { padding: 8px 10px; border-bottom: 1px solid var(--p-celeste); }
+.panel input.nota { width: 72px; min-height: 40px; box-sizing: border-box; padding: 0 8px; border: 1px solid #7fa6cc; border-radius: 8px; font: inherit; color: var(--p-tinta); }
+.panel .fila-acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 20px; }
+
+/* Director */
+.panel .dos-col { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.panel .aviso-clave { margin-top: 16px; padding: 14px; border-radius: 10px; background: var(--p-celeste); border: 1px solid var(--p-celeste-2); }
+.panel .clave { font-family: ui-monospace, monospace; font-size: 18px; }
+.panel .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 28px; }
+.panel .kpi { background: var(--p-celeste); border-radius: 12px; padding: 16px; }
+.panel .kpi b { display: block; font-family: var(--fuente-titulos); font-size: 32px; line-height: 1.1; color: var(--p-azul); }
+.panel .barra { height: 16px; background: var(--p-celeste); border-radius: 8px; overflow: hidden; }
+.panel .barra i { display: block; height: 100%; background: var(--p-azul); border-radius: 8px; }
+.panel .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.panel .barra-fila { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.panel .barra-fila .nom { flex: 0 0 110px; font-size: 14px; }
+.panel .barra-fila .barra { flex: 1; }
+.panel .barra-fila b { flex: 0 0 44px; text-align: right; }
