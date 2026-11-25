@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -38,6 +39,19 @@ app.use('/api/asistencias', asistenciasRoutes);
 app.use('/api/notificaciones', notificacionesRoutes);
 app.use('/api/docente', docenteRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+
+// --- Frontend compilado (src/frontend/dist) ---
+// Primero ejecuta "npm run build". Así todo funciona en un solo puerto.
+const carpetaFrontend = path.join(__dirname, 'frontend', 'dist');
+app.use(express.static(carpetaFrontend));
+
+// Cualquier ruta que no sea de la API devuelve index.html (para React Router)
+app.use((req, res, next) => {
+    if (req.method !== 'GET' || req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(carpetaFrontend, 'index.html'), (err) => {
+        if (err) res.status(404).send('Falta compilar el frontend: ejecuta "npm run build".');
+    });
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

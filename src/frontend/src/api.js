@@ -1,4 +1,8 @@
-export const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api';
+// En desarrollo (npm run dev) usa el backend en localhost:3000.
+// En la versión compilada (npm run build) usa '/api', porque Express sirve
+// el frontend y la API en el mismo puerto (sirve para el túnel o el celular).
+export const API_URL =
+  import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:3000/api' : '/api');
 const CLAVE_SESION = 'simae_sesion';
 
 // Función única para hablar con el backend.
