@@ -30,6 +30,10 @@ async function crearNotificacion(req, res) {
             return res.status(400).json({ error: `tipo debe ser uno de: ${tiposValidos.join(', ')}` });
         }
 
+        if (String(mensaje).length > 1000) {
+            return res.status(400).json({ error: 'El mensaje no puede pasar de 1000 caracteres' });
+        }
+
         const pool = await conectarDB();
         const resultado = await pool.request()
             .input('id_alu', sql.Int, id_alu)
@@ -42,6 +46,9 @@ async function crearNotificacion(req, res) {
 
         res.status(201).json(resultado.recordset[0]);
     } catch (error) {
+        if ((error.message || '').includes('FK_notif_alumno')) {
+            return res.status(404).json({ error: 'El alumno no existe' });
+        }
         res.status(500).json({ error: error.message });
     }
 }

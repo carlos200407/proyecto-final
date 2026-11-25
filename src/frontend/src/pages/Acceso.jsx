@@ -6,13 +6,14 @@ import Inicio from './Inicio';
 
 const CLAVE_SESION = 'simae_sesion';
 
-// Panel de cada rol (el Secretario todavía usa la pantalla Inicio).
+// Panel de cada rol.
 const PANEL_POR_ROL = {
   Padre: '/padre/notas',
   Docente: '/docente/notas',
   Director: '/director/dashboard',
+  Secretario: '/secretaria/matriculas',
 };
-const BASE_POR_ROL = { Padre: '/padre', Docente: '/docente', Director: '/director' };
+const BASE_POR_ROL = { Padre: '/padre', Docente: '/docente', Director: '/director', Secretario: '/secretaria' };
 
 function leerSesion() {
   try {

@@ -41,6 +41,7 @@
 .panel .tarjeta { background: #fff; border: 1px solid var(--p-borde); border-radius: 12px; padding: 20px; }
 .panel .campo { display: block; margin: 0 0 14px; }
 .panel .campo span { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.panel .campo textarea { width: 100%; box-sizing: border-box; min-height: 110px; padding: 10px 12px; border: 1px solid #7fa6cc; border-radius: 8px; font: inherit; color: var(--p-tinta); resize: vertical; }
 .panel .campo input, .panel .campo select {
   width: 100%; box-sizing: border-box; min-height: 44px; padding: 0 12px;
   border: 1px solid #7fa6cc; border-radius: 8px; font: inherit; color: var(--p-tinta); background: #fff;

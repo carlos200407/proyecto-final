@@ -65,4 +65,36 @@ async function obtenerVacantes(req, res) {
     }
 }
 
-module.exports = { obtenerSecciones, crearSeccion, obtenerVacantes };
+// Cambia las vacantes de una sección. No puede quedar por debajo de los alumnos ya inscritos.
+async function actualizarCapacidad(req, res) {
+    try {
+        const id = parseInt(req.params.id);
+        const capacidad = Number(req.body.capacidad);
+        if (Number.isNaN(id) || !Number.isInteger(capacidad) || capacidad < 1) {
+            return res.status(400).json({ error: 'capacidad debe ser un entero mayor que 0' });
+        }
+
+        const pool = await conectarDB();
+        const ocupadas = await pool.request()
+            .input('id', sql.Int, id)
+            .input('anio', sql.Int, ANIO_MATRICULA)
+            .query(`SELECT COUNT(*) AS n FROM MATRICULA
+                    WHERE id_sec = @id AND anio = @anio AND estado IN ('Activa', 'Pendiente')`);
+        if (capacidad < ocupadas.recordset[0].n) {
+            return res.status(409).json({
+                error: `Ya hay ${ocupadas.recordset[0].n} alumnos en esta sección; la capacidad no puede ser menor`
+            });
+        }
+
+        const r = await pool.request()
+            .input('id', sql.Int, id)
+            .input('capacidad', sql.Int, capacidad)
+            .query('UPDATE SECCION SET capacidad = @capacidad OUTPUT INSERTED.* WHERE id_sec = @id');
+        if (r.recordset.length === 0) return res.status(404).json({ error: 'Sección no encontrada' });
+        res.json(r.recordset[0]);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports = { obtenerSecciones, crearSeccion, obtenerVacantes, actualizarCapacidad };

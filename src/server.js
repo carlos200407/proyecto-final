@@ -16,6 +16,7 @@ const asistenciasRoutes = require('./routes/asistencias.routes');
 const notificacionesRoutes = require('./routes/notificaciones.routes');
 const docenteRoutes = require('./routes/docente.routes');
 const dashboardRoutes = require('./routes/dashboard.routes');
+const secretariaRoutes = require('./routes/secretaria.routes');
 
 if (!process.env.JWT_SECRET) {
     console.error('❌ Falta JWT_SECRET en el archivo .env (copia .env.example como .env).');
@@ -39,6 +40,7 @@ app.use('/api/asistencias', asistenciasRoutes);
 app.use('/api/notificaciones', notificacionesRoutes);
 app.use('/api/docente', docenteRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/secretaria', secretariaRoutes);
 
 // --- Frontend compilado (src/frontend/dist) ---
 // Primero ejecuta "npm run build". Así todo funciona en un solo puerto.
