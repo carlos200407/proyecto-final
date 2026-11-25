@@ -1,5 +1,6 @@
 const { conectarDB, sql } = require('../config/db');
 const { ANIO_MATRICULA } = require('../config/anio');
+const { enTransaccion } = require('../config/transaccion');
 
 async function obtenerSecciones(req, res) {
     try {
@@ -26,17 +27,27 @@ async function crearSeccion(req, res) {
             return res.status(400).json({ error: 'capacidad debe ser un entero mayor que 0' });
         }
 
-        const pool = await conectarDB();
-        const resultado = await pool.request()
-            .input('grado', sql.VarChar, grado)
-            .input('letra', sql.VarChar, letra)
-            .input('nivel', sql.VarChar, nivel)
-            .input('capacidad', sql.Int, capacidad)
-            .query(`INSERT INTO SECCION (nivel, grado, letra, capacidad)
-                    OUTPUT INSERTED.*
-                    VALUES (@nivel, @grado, @letra, @capacidad)`);
+        // La sección nace con los cursos de su nivel y grado (sin docente; se asignan en "Asignar docentes").
+        const creada = await enTransaccion(async (tx) => {
+            const r = await new sql.Request(tx)
+                .input('grado', sql.VarChar, grado)
+                .input('letra', sql.VarChar, letra)
+                .input('nivel', sql.VarChar, nivel)
+                .input('capacidad', sql.Int, capacidad)
+                .query(`INSERT INTO SECCION (nivel, grado, letra, capacidad)
+                        OUTPUT INSERTED.*
+                        VALUES (@nivel, @grado, @letra, @capacidad)`);
+            const sec = r.recordset[0];
+            const c = await new sql.Request(tx)
+                .input('id_sec', sql.Int, sec.id_sec)
+                .input('nivel', sql.VarChar, nivel)
+                .input('grado', sql.VarChar, grado)
+                .query(`INSERT INTO SECCION_CURSO (id_sec, id_cur, docente_id)
+                        SELECT @id_sec, id_cur, NULL FROM CURSO WHERE nivel = @nivel AND grado = @grado`);
+            return { ...sec, cursos_agregados: c.rowsAffected[0] };
+        });
 
-        res.status(201).json(resultado.recordset[0]);
+        res.status(201).json(creada);
     } catch (error) {
         if (error.message.includes('UQ_seccion_nivel_grado_letra')) {
             return res.status(409).json({ error: 'Ya existe una sección con ese grado y letra' });

@@ -101,14 +101,14 @@ function Tablero({ datos }) {
           <section style={{ marginTop: 24 }}>
             <h2 style={{ fontSize: 20, marginBottom: 12 }}>Por sección</h2>
             <div className="caja-tabla">
-              <table>
+              <table className="tabla-movil">
                 <thead><tr><th>Nivel</th><th>Sección</th><th>Alumnos</th><th>Promedio</th><th>Aprobados</th><th>Estado</th></tr></thead>
                 <tbody>
                   {sel.map((r) => (
                     <tr key={r.nivel + r.sec}>
-                      <td>{r.nivel}</td><td><b>{r.sec}</b></td><td>{r.alum}</td>
-                      <td><b style={{ color: '#1f5fbf' }}>{r.p.toFixed(2)}</b></td><td>{r.aprob}%</td>
-                      <td><span className={`etiqueta ${r.p >= 11 ? 'etiqueta-ok' : 'etiqueta-no'}`}>{r.p >= 11 ? 'Normal' : 'En riesgo'}</span></td>
+                      <td data-label="Nivel">{r.nivel}</td><td data-label="Sección"><b>{r.sec}</b></td><td data-label="Alumnos">{r.alum}</td>
+                      <td data-label="Promedio"><b style={{ color: '#1f5fbf' }}>{r.p.toFixed(2)}</b></td><td data-label="Aprobados">{r.aprob}%</td>
+                      <td data-label="Estado"><span className={`etiqueta ${r.p >= 11 ? 'etiqueta-ok' : 'etiqueta-no'}`}>{r.p >= 11 ? 'Normal' : 'En riesgo'}</span></td>
                     </tr>
                   ))}
                 </tbody>

@@ -39,7 +39,7 @@ function Lista({ inicial, secciones, anio }) {
         <p className="suave">No hay solicitudes pendientes. 🎉</p>
       ) : (
         <div className="caja-tabla">
-          <table>
+          <table className="tabla-movil">
             <thead><tr><th>Alumno</th><th>Apoderado</th><th>Grado</th><th>Sección</th><th /></tr></thead>
             <tbody>
               {lista.map((m) => (
@@ -93,9 +93,9 @@ function Solicitud({ m, opciones, alResolver }) {
   return (
     <tr>
       <td><b>{m.nombre} {m.apellido}</b><br /><span className="suave" style={{ fontSize: 13 }}>DNI {m.dni}</span></td>
-      <td>{m.ap_nombre} {m.ap_apellido}<br /><span className="suave" style={{ fontSize: 13 }}>{m.ap_correo}</span></td>
-      <td>{nombreNivel(m.nivel)} {m.grado}</td>
-      <td>
+      <td data-label="Apoderado"><div className="valor">{m.ap_nombre} {m.ap_apellido}<br /><span className="suave" style={{ fontSize: 13 }}>{m.ap_correo}</span></div></td>
+      <td data-label="Grado">{nombreNivel(m.nivel)} {m.grado}</td>
+      <td data-label="Sección">
         <select aria-label={`Sección de ${m.nombre}`} value={sec} onChange={(e) => setSec(e.target.value)} disabled={trabajando}
           style={{ minHeight: 40, borderRadius: 8, border: '1px solid #7fa6cc', padding: '0 8px', font: 'inherit' }}>
           {opciones.map((s) => (
@@ -106,7 +106,7 @@ function Solicitud({ m, opciones, alResolver }) {
         </select>
         {error && <p role="alert" style={{ margin: '6px 0 0', fontSize: 13 }}>{error}</p>}
       </td>
-      <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+      <td className="acciones" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
         {rechazando ? (
           <>
             <span style={{ marginRight: 8, fontSize: 14 }}>¿Rechazar?</span>

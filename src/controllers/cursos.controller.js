@@ -10,28 +10,6 @@ async function obtenerCursos(req, res) {
     }
 }
 
-async function crearCurso(req, res) {
-    try {
-        const { nombre, grado } = req.body;
-
-        if (!nombre || !grado) {
-            return res.status(400).json({ error: 'Faltan campos obligatorios: nombre, grado' });
-        }
-
-        const pool = await conectarDB();
-        const resultado = await pool.request()
-            .input('nombre', sql.VarChar, nombre)
-            .input('grado', sql.VarChar, grado)
-            .query(`INSERT INTO CURSO (nombre, grado)
-                    OUTPUT INSERTED.*
-                    VALUES (@nombre, @grado)`);
-
-        res.status(201).json(resultado.recordset[0]);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-}
-
 async function asignarCursoASeccion(req, res) {
     try {
         const { id_sec, id_cur, docente_id } = req.body;
@@ -68,7 +46,7 @@ async function obtenerCursosDeSeccion(req, res) {
                            u.nombre AS nombre_docente, u.apellido AS apellido_docente
                     FROM SECCION_CURSO sc
                     INNER JOIN CURSO c ON sc.id_cur = c.id_cur
-                    INNER JOIN USUARIO u ON sc.docente_id = u.id_usu
+                    LEFT JOIN USUARIO u ON sc.docente_id = u.id_usu
                     WHERE sc.id_sec = @id_sec`);
         res.json(resultado.recordset);
     } catch (error) {
@@ -76,4 +54,4 @@ async function obtenerCursosDeSeccion(req, res) {
     }
 }
 
-module.exports = { obtenerCursos, crearCurso, asignarCursoASeccion, obtenerCursosDeSeccion };
+module.exports = { obtenerCursos, asignarCursoASeccion, obtenerCursosDeSeccion };

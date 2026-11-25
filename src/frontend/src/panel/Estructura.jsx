@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { borrarSesion, leerSesion } from '../api';
 import './panel.css';
@@ -44,17 +45,26 @@ export function PanelEscritorio({ titulo, rol, enlaces, children }) {
   const salir = useCerrarSesion();
   const u = leerSesion()?.usuario;
   const nombre = u ? `${u.nombre} ${u.apellido}` : '';
+  // En celular el menú está plegado y se abre con el botón "Menú"; en pantalla grande siempre se ve.
+  const [abierto, setAbierto] = useState(false);
   return (
     <div className="panel">
       <div className="escritorio">
-        <aside className="lateral">
-          <div className="marca"><b>El Técnico 3052</b><small>{rol}</small></div>
-          <nav aria-label="Menú del panel">
-            {enlaces.map((e) => (
-              <NavLink key={e.to} to={e.to} className={({ isActive }) => (isActive ? 'activo' : '')}>{e.texto}</NavLink>
-            ))}
-          </nav>
-          <button type="button" className="salir" onClick={salir} style={{ marginTop: 12 }}>Cerrar sesión</button>
+        <aside className={`lateral${abierto ? ' abierto' : ''}`}>
+          <div className="barra-movil">
+            <div className="marca-panel"><b>El Técnico 3052</b><small>{rol}</small></div>
+            <button type="button" className="menu-btn" aria-expanded={abierto} aria-controls="menu-panel" onClick={() => setAbierto(!abierto)}>
+              {abierto ? 'Cerrar' : 'Menú'}
+            </button>
+          </div>
+          <div className="menu" id="menu-panel">
+            <nav aria-label="Menú del panel">
+              {enlaces.map((e) => (
+                <NavLink key={e.to} to={e.to} onClick={() => setAbierto(false)} className={({ isActive }) => (isActive ? 'activo' : '')}>{e.texto}</NavLink>
+              ))}
+            </nav>
+            <button type="button" className="salir" onClick={salir} style={{ marginTop: 12 }}>Cerrar sesión</button>
+          </div>
         </aside>
         <main className="contenido">
           <div className="contenido-cab"><h1>{titulo}</h1><span className="suave">{nombre}</span></div>

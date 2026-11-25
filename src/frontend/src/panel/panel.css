@@ -88,13 +88,13 @@
 }
 .panel .lateral a:hover, .panel .lateral button.salir:hover { background: var(--p-azul); color: #fff; }
 .panel .lateral a.activo { background: var(--p-azul); color: #fff; font-weight: 600; }
-.panel .lateral .marca { padding: 0 20px 20px; }
-.panel .lateral .marca b { display: block; font-family: var(--fuente-titulos); font-size: 20px; color: #fff; line-height: 1.1; }
-.panel .lateral .marca small { display: block; font-size: 13px; color: var(--p-celeste-2); margin-top: 4px; }
+.panel .lateral .marca-panel { padding: 0 20px 20px; }
+.panel .lateral .marca-panel b { display: block; font-family: var(--fuente-titulos); font-size: 20px; color: #fff; line-height: 1.1; }
+.panel .lateral .marca-panel small { display: block; font-size: 13px; color: var(--p-celeste-2); margin-top: 4px; }
 .panel .contenido { flex: 999 1 560px; min-width: 0; padding: 28px 32px; }
 .panel .contenido-cab { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 20px; }
 .panel .contenido-cab h1 { font-size: 30px; }
-@media (max-width: 640px) { .panel .contenido { padding: 20px 16px; } .panel .lateral { flex-basis: 100%; } }
+
 
 /* Tablas */
 .panel .caja-tabla { overflow-x: auto; border: 1px solid var(--p-borde); border-radius: 12px; }
@@ -118,3 +118,42 @@
 .panel .barra-fila .nom { flex: 0 0 110px; font-size: 14px; }
 .panel .barra-fila .barra { flex: 1; }
 .panel .barra-fila b { flex: 0 0 44px; text-align: right; }
+
+/* ===== Celular ===== */
+.panel .menu-btn { display: none; }
+
+@media (max-width: 860px) {
+  /* El menú lateral pasa a una barra superior; las opciones se abren con "Menú". */
+  .panel .escritorio { display: block; }
+  .panel .lateral { padding: 0; position: sticky; top: 0; z-index: 20; }
+  .panel .lateral .barra-movil { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; }
+  .panel .lateral .marca-panel { padding: 0; }
+  .panel .lateral .marca-panel b { font-size: 18px; }
+  .panel .menu-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 8px; border: 2px solid var(--p-celeste-2); background: transparent; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+  .panel .menu-btn:hover { background: var(--p-azul); }
+  .panel .lateral .menu { display: none; padding-bottom: 8px; border-top: 1px solid rgba(255, 255, 255, 0.15); }
+  .panel .lateral.abierto .menu { display: block; }
+  .panel .lateral a, .panel .lateral button.salir { padding: 12px 16px; }
+  .panel .contenido { padding: 20px 16px; }
+  .panel .contenido-cab h1 { font-size: 24px; }
+  .panel .dos-col { gap: 16px; }
+  .panel .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .panel .kpi { padding: 12px; }
+  .panel .kpi b { font-size: 26px; }
+
+  /* Las tablas se vuelven tarjetas: una por fila, con la etiqueta de cada dato. */
+  .panel .caja-tabla { border: 0; overflow: visible; }
+  .panel .tabla-movil, .panel .tabla-movil tbody, .panel .tabla-movil tr, .panel .tabla-movil td { display: block; width: 100%; box-sizing: border-box; }
+  .panel .tabla-movil thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .panel .tabla-movil tr { margin-bottom: 12px; padding: 12px 14px; background: #fff; border: 1px solid var(--p-borde); border-radius: 12px; }
+  .panel .tabla-movil td { border: 0; padding: 5px 0; }
+  .panel .tabla-movil td[data-label] { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .panel .tabla-movil td[data-label]::before { content: attr(data-label); flex: 0 0 auto; max-width: 45%; font-size: 13px; font-weight: 600; color: var(--p-suave); }
+  .panel .tabla-movil td select { flex: 1 1 auto; min-width: 0 !important; max-width: 62%; }
+  .panel .tabla-movil td.acciones { text-align: left !important; white-space: normal !important; padding-top: 10px; }
+  .panel .tabla-movil td .valor { min-width: 0; text-align: right; overflow-wrap: anywhere; }
+  .panel .tabla-movil td.alumno { font-size: 17px; padding-bottom: 8px; }
+  .panel .tabla-movil input.nota { width: 96px; }
+  .panel .fila-acciones { gap: 12px; }
+  .panel .fila-acciones .suave { margin-left: 0 !important; }
+}

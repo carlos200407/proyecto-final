@@ -107,14 +107,14 @@ function Nomina({ s, hermanas, version, alCambiar }) {
     <>
       {error && <p role="alert" style={{ margin: '8px 0', padding: '10px 12px', borderRadius: 8, border: '2px solid #12315f' }}>{error}</p>}
       <div className="caja-tabla">
-        <table>
+        <table className="tabla-movil">
           <thead><tr><th>Alumno</th><th>Estado</th><th>Cambiar a</th><th /></tr></thead>
           <tbody>
             {datos.alumnos.map((a) => (
               <tr key={a.id_mat}>
                 <td><b>{a.apellido}, {a.nombre}</b><br /><span className="suave" style={{ fontSize: 13 }}>DNI {a.dni}</span></td>
-                <td><span className={`etiqueta ${a.estado === 'Activa' ? 'etiqueta-ok' : ''}`}>{a.estado}</span></td>
-                <td>
+                <td data-label="Estado"><span className={`etiqueta ${a.estado === 'Activa' ? 'etiqueta-ok' : ''}`}>{a.estado}</span></td>
+                <td data-label="Cambiar a">
                   {a.movible ? (
                     <select aria-label={`Mover a ${a.nombre}`} value={s.id_sec} onChange={(e) => mover(a, e.target.value)}
                       style={{ minHeight: 40, borderRadius: 8, border: '1px solid #7fa6cc', padding: '0 8px', font: 'inherit' }}>
@@ -128,7 +128,7 @@ function Nomina({ s, hermanas, version, alCambiar }) {
                     <span className="suave" style={{ fontSize: 13 }}>Ya tiene notas o asistencias</span>
                   )}
                 </td>
-                <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                <td className="acciones" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                   {a.estado === 'Activa' && (retirando === a.id_mat ? (
                     <>
                       <span style={{ marginRight: 8, fontSize: 14 }}>¿Retirar?</span>

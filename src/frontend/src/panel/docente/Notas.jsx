@@ -84,19 +84,19 @@ function Tabla({ datos, id_sec, id_cur }) {
         <span className="etiqueta">{seccion.nivel} {seccion.grado}{seccion.letra}</span><span className="etiqueta">{seccion.curso}</span><span className="etiqueta">Año {anio}</span>
       </div>
       <div className="caja-tabla">
-        <table>
+        <table className="tabla-movil">
           <thead><tr><th>Alumno</th>{criterios.map((c) => <th key={c.id_crit}>{c.nombre}</th>)}<th>Promedio</th><th>Estado</th></tr></thead>
           <tbody>
             {alumnos.map((a, i) => {
               const ok = proms[i] !== null && proms[i] >= 11;
               return (
                 <tr key={a.id_mat}>
-                  <td style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>{a.apellido}, {a.nombre}</td>
+                  <td className="alumno" style={{ fontWeight: 600 }}>{a.apellido}, {a.nombre}</td>
                   {criterios.map((c, j) => (
-                    <td key={c.id_crit}><input className="nota" type="number" min="0" max="20" step="0.5" value={valores[i][j]} onChange={cambiar(i, j)} aria-label={`${c.nombre} de ${a.nombre} ${a.apellido}`} /></td>
+                    <td key={c.id_crit} data-label={c.nombre}><input className="nota" inputMode="decimal" type="number" min="0" max="20" step="0.5" value={valores[i][j]} onChange={cambiar(i, j)} aria-label={`${c.nombre} de ${a.nombre} ${a.apellido}`} /></td>
                   ))}
-                  <td><b style={{ fontSize: 18, color: '#1f5fbf' }}>{proms[i] === null ? '—' : proms[i].toFixed(2)}</b></td>
-                  <td>{proms[i] !== null && <span className={`etiqueta ${ok ? 'etiqueta-ok' : 'etiqueta-no'}`}>{ok ? 'Aprobado' : 'En riesgo'}</span>}</td>
+                  <td data-label="Promedio"><b style={{ fontSize: 18, color: '#1f5fbf' }}>{proms[i] === null ? '—' : proms[i].toFixed(2)}</b></td>
+                  <td data-label="Estado">{proms[i] !== null && <span className={`etiqueta ${ok ? 'etiqueta-ok' : 'etiqueta-no'}`}>{ok ? 'Aprobado' : 'En riesgo'}</span>}</td>
                 </tr>
               );
             })}

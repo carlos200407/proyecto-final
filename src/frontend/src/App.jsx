@@ -12,6 +12,8 @@ import DocenteNotas from './panel/docente/Notas';
 import DirectorUsuarios from './panel/director/Usuarios';
 import DirectorDashboard from './panel/director/Dashboard';
 import DirectorSecciones from './panel/director/Secciones';
+import DirectorCursos from './panel/director/Cursos';
+import DirectorDocentes from './panel/director/Docentes';
 import SecretariaPendientes from './panel/secretaria/Pendientes';
 import SecretariaSecciones from './panel/secretaria/Secciones';
 import SecretariaMatricular from './panel/secretaria/Matricular';
@@ -54,6 +56,8 @@ export default function App() {
       <Route path="/director" element={<Navigate to="/director/dashboard" replace />} />
       <Route path="/director/usuarios" element={soloDirector(<DirectorUsuarios />)} />
       <Route path="/director/secciones" element={soloDirector(<DirectorSecciones />)} />
+      <Route path="/director/cursos" element={soloDirector(<DirectorCursos />)} />
+      <Route path="/director/docentes" element={soloDirector(<DirectorDocentes />)} />
       <Route path="/director/dashboard" element={soloDirector(<DirectorDashboard />)} />
 
       <Route path="*" element={<Navigate to="/" replace />} />

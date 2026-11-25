@@ -146,14 +146,14 @@ function Historial({ avisos }) {
       <h2 style={{ fontSize: 22, marginBottom: 12 }}>Últimos avisos enviados</h2>
       {avisos.length === 0 ? <p className="suave">Todavía no se enviaron avisos.</p> : (
         <div className="caja-tabla">
-          <table>
+          <table className="tabla-movil">
             <thead><tr><th>Fecha</th><th>Alumno</th><th>Tipo</th><th>Mensaje</th></tr></thead>
             <tbody>
               {avisos.map((a) => (
                 <tr key={a.id_notif}>
-                  <td style={{ whiteSpace: 'nowrap' }}>{new Date(a.fecha_envio).toLocaleDateString('es-PE', { timeZone: 'UTC' })}</td>
-                  <td>{a.nombre} {a.apellido}</td>
-                  <td><span className={`etiqueta ${a.tipo === 'Amonestacion' ? 'etiqueta-no' : ''}`}>{nombreTipo(a.tipo)}</span></td>
+                  <td data-label="Fecha" style={{ whiteSpace: 'nowrap' }}>{new Date(a.fecha_envio).toLocaleDateString('es-PE', { timeZone: 'UTC' })}</td>
+                  <td data-label="Alumno">{a.nombre} {a.apellido}</td>
+                  <td data-label="Tipo"><span className={`etiqueta ${a.tipo === 'Amonestacion' ? 'etiqueta-no' : ''}`}>{nombreTipo(a.tipo)}</span></td>
                   <td style={{ maxWidth: 320 }}>{a.mensaje}<br /><span className="suave" style={{ fontSize: 12 }}>por {a.env_nombre} {a.env_apellido}</span></td>
                 </tr>
               ))}

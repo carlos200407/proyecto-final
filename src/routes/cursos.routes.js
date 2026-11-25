@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const {
     obtenerCursos,
-    crearCurso,
     asignarCursoASeccion,
     obtenerCursosDeSeccion
 } = require('../controllers/cursos.controller');
+const { crearCurso } = require('../controllers/director.controller');
 const { verificarToken, verificarRol } = require('../middleware/auth.middleware');
 
 router.get('/', verificarToken, obtenerCursos);

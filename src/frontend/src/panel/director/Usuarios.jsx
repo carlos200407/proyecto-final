@@ -86,15 +86,15 @@ function Contenido({ inicial }) {
       <section style={{ flex: '2 1 420px', minWidth: 0 }}>
         <h2 style={{ fontSize: 22, marginBottom: 12 }}>Personal registrado</h2>
         <div className="caja-tabla">
-          <table>
+          <table className="tabla-movil">
             <thead><tr><th>Nombre</th><th>Rol</th><th>Estado</th><th /></tr></thead>
             <tbody>
               {lista.map((u) => (
                 <tr key={u.id_usu}>
                   <td><b>{u.nombre} {u.apellido}</b><br /><span className="suave" style={{ fontSize: 13 }}>{u.correo}</span></td>
-                  <td>{u.rol}</td>
-                  <td><span className={`etiqueta ${u.activo ? 'etiqueta-ok' : 'etiqueta-no'}`}>{u.activo ? 'Activo' : 'Desactivado'}</span></td>
-                  <td style={{ textAlign: 'right' }}><button type="button" className="pbtn pbtn-d" onClick={() => alternar(u)}>{u.activo ? 'Desactivar' : 'Reactivar'}</button></td>
+                  <td data-label="Rol">{u.rol}</td>
+                  <td data-label="Estado"><span className={`etiqueta ${u.activo ? 'etiqueta-ok' : 'etiqueta-no'}`}>{u.activo ? 'Activo' : 'Desactivado'}</span></td>
+                  <td className="acciones" style={{ textAlign: 'right' }}><button type="button" className="pbtn pbtn-d" onClick={() => alternar(u)}>{u.activo ? 'Desactivar' : 'Reactivar'}</button></td>
                 </tr>
               ))}
             </tbody>

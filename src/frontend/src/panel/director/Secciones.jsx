@@ -53,7 +53,7 @@ function Contenido({ inicial, anio }) {
       });
       setLista([...lista, { ...s, ocupadas: 0, disponibles: s.capacidad }].sort(ordenar));
       setLetra('');
-      setAviso(`Sección creada: ${nivel} ${s.grado}${s.letra}.`);
+      setAviso(`Sección creada: ${nivel} ${s.grado}${s.letra}. Se le agregaron ${s.cursos_agregados} cursos del grado; asigna sus docentes en “Asignar docentes”.`);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -84,12 +84,12 @@ function Contenido({ inicial, anio }) {
         <button type="submit" className="pbtn pbtn-p pbtn-ancho" disabled={enviando}>{enviando ? 'Creando…' : 'Crear sección'}</button>
         {error && <p role="alert" style={{ margin: '16px 0 0', padding: '12px 14px', borderRadius: 8, border: '2px solid #12315f' }}>{error}</p>}
         {aviso && <p role="status" className="aviso-clave" style={{ margin: '16px 0 0' }}>{aviso}</p>}
-        <p className="suave" style={{ margin: '12px 0 0', fontSize: 13 }}>Una sección nueva necesita cursos y docentes asignados para que se puedan registrar notas.</p>
+        <p className="suave" style={{ margin: '12px 0 0', fontSize: 13 }}>La sección recibe automáticamente los cursos de su grado (los defines en “Cursos”). Falta asignar sus docentes.</p>
       </form>
       <section style={{ flex: '2 1 420px', minWidth: 0 }}>
         <h2 style={{ fontSize: 22, marginBottom: 12 }}>Secciones · matrícula {anio}</h2>
         <div className="caja-tabla">
-          <table>
+          <table className="tabla-movil">
             <thead><tr><th>Sección</th><th>Inscritos</th><th>Vacantes totales</th><th /></tr></thead>
             <tbody>
               {lista.map((s) => <Fila key={s.id_sec} s={s} alGuardar={actualizada} />)}
@@ -125,12 +125,12 @@ function Fila({ s, alGuardar }) {
   return (
     <tr>
       <td><b>{s.nivel === 'Primaria' ? 'Primaria' : 'Secundaria'} {s.grado}{s.letra}</b></td>
-      <td>{s.ocupadas}</td>
-      <td>
+      <td data-label="Inscritos">{s.ocupadas}</td>
+      <td data-label="Vacantes totales">
         <input className="nota" type="number" min="1" max="60" aria-label={`Vacantes de ${s.grado}${s.letra}`} value={valor} onChange={(e) => setValor(e.target.value)} />
         {error && <p role="alert" style={{ margin: '6px 0 0', fontSize: 13 }}>{error}</p>}
       </td>
-      <td style={{ textAlign: 'right' }}>
+      <td className="acciones" style={{ textAlign: 'right' }}>
         <button type="button" className="pbtn pbtn-d" disabled={!cambio || guardando} onClick={guardar}>{guardando ? 'Guardando…' : 'Guardar'}</button>
       </td>
     </tr>
