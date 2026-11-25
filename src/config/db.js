@@ -13,15 +13,25 @@ const config = {
     }
 };
 
-async function conectarDB() {
-    try {
-        const pool = await sql.connect(config);
-        console.log('✅ Conectado a SQL Server');
-        return pool;
-    } catch (error) {
-        console.error('❌ Error al conectar a SQL Server:', error);
-        throw error;
+// Un solo pool de conexiones para todo el servidor (antes se reconectaba en cada petición).
+let poolPromise = null;
+
+function conectarDB() {
+    if (!poolPromise) {
+        poolPromise = new sql.ConnectionPool(config)
+            .connect()
+            .then((pool) => {
+                console.log('✅ Conectado a SQL Server');
+                pool.on('error', () => { poolPromise = null; });
+                return pool;
+            })
+            .catch((error) => {
+                poolPromise = null; // permite reintentar en la siguiente petición
+                console.error('❌ Error al conectar a SQL Server:', error.message);
+                throw error;
+            });
     }
+    return poolPromise;
 }
 
 module.exports = { sql, conectarDB };

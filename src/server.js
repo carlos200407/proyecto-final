@@ -13,6 +13,13 @@ const criteriosRoutes = require('./routes/criterios.routes');
 const notasRoutes = require('./routes/notas.routes');
 const asistenciasRoutes = require('./routes/asistencias.routes');
 const notificacionesRoutes = require('./routes/notificaciones.routes');
+const docenteRoutes = require('./routes/docente.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
+
+if (!process.env.JWT_SECRET) {
+    console.error('❌ Falta JWT_SECRET en el archivo .env (copia .env.example como .env).');
+    process.exit(1);
+}
 
 const app = express();
 app.use(cors());
@@ -29,6 +36,8 @@ app.use('/api/criterios', criteriosRoutes);
 app.use('/api/notas', notasRoutes);
 app.use('/api/asistencias', asistenciasRoutes);
 app.use('/api/notificaciones', notificacionesRoutes);
+app.use('/api/docente', docenteRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

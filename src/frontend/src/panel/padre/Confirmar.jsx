@@ -1,28 +1,43 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
+import { pedirAuth } from '../../api';
 import { CabMovil } from '../Estructura';
-
-const EJEMPLO = {
-  nivel: 'Secundaria', grado: '3° año',
-  alumno: { nombre: 'Mateo', apellido: 'Quispe', dni: '78912345' },
-  apoderado: { nombre: 'Luis', apellido: 'Quispe' },
-};
 
 export default function Confirmar() {
   const { state } = useLocation();
-  const d = state || EJEMPLO;
-  const [listo, setListo] = useState(false);
   const [acepta, setAcepta] = useState(true);
+  const [enviando, setEnviando] = useState(false);
+  const [error, setError] = useState('');
+  const [resultado, setResultado] = useState(null);
 
   useEffect(() => { document.title = 'Confirmar matrícula – El Técnico 3052'; }, []);
 
+  // Si entró directo a esta dirección, vuelve al paso 1.
+  if (!state) return <Navigate to="/padre/matricula" replace />;
+
+  const { nivel, grado, alumno, apoderado, anio } = state;
   const filas = [
-    ['Alumno', `${d.alumno.nombre} ${d.alumno.apellido}`],
-    ['DNI alumno', d.alumno.dni],
-    ['Nivel y grado', `${d.nivel} · ${d.grado}`],
-    ['Año lectivo', '2027'],
-    ['Apoderado', `${d.apoderado.nombre} ${d.apoderado.apellido}`],
+    ['Alumno', `${alumno.nombre} ${alumno.apellido}`],
+    ['DNI alumno', alumno.dni],
+    ['Nivel y grado', `${nivel} · ${grado}`],
+    ['Año lectivo', String(anio)],
+    ['Apoderado', `${apoderado.nombre} ${apoderado.apellido}`],
   ];
+
+  async function confirmar() {
+    setError('');
+    setEnviando(true);
+    try {
+      const r = await pedirAuth('/matriculas/en-linea', {
+        metodo: 'POST',
+        cuerpo: { nombre: alumno.nombre, apellido: alumno.apellido, dni: alumno.dni, nivel, grado },
+      });
+      setResultado(r);
+    } catch (err) {
+      setError(err.message);
+      setEnviando(false);
+    }
+  }
 
   return (
     <div className="panel">
@@ -34,19 +49,22 @@ export default function Confirmar() {
           <div className="pasos"><span className="ok" /><span className="ok" /></div>
         </div>
         <div className="seccion">
-          {!listo ? (
+          {!resultado ? (
             <>
               <div className="tarjeta">
                 {filas.map(([k, v]) => (
                   <div className="resumen-fila" key={k}><span className="suave">{k}</span><b style={{ textAlign: 'right' }}>{v}</b></div>
                 ))}
               </div>
-              <p className="suave" style={{ margin: '16px 0' }}>[Texto sobre el proceso: la secretaría revisa los datos y asigna la sección.]</p>
+              <p className="suave" style={{ margin: '16px 0' }}>[Texto sobre el proceso: la secretaría revisa los datos y confirma la sección.]</p>
               <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 16 }}>
                 <input type="checkbox" checked={acepta} onChange={(e) => setAcepta(e.target.checked)} style={{ width: 22, height: 22, flex: 'none', marginTop: 2 }} />
                 <span>Declaro que los datos son correctos.</span>
               </label>
-              <button type="button" className="pbtn pbtn-p pbtn-ancho" disabled={!acepta} onClick={() => setListo(true)}>Confirmar matrícula</button>
+              {error && <p role="alert" style={{ margin: '0 0 16px', padding: '12px 14px', borderRadius: 8, border: '2px solid #12315f' }}>{error}</p>}
+              <button type="button" className="pbtn pbtn-p pbtn-ancho" disabled={!acepta || enviando} onClick={confirmar}>
+                {enviando ? 'Enviando…' : 'Confirmar matrícula'}
+              </button>
               <Link className="pbtn pbtn-s pbtn-ancho" to="/padre/matricula" style={{ marginTop: 10 }}>Corregir datos</Link>
             </>
           ) : (
@@ -55,8 +73,9 @@ export default function Confirmar() {
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10" /></svg>
               </div>
               <h2 style={{ fontSize: 24 }}>Solicitud enviada</h2>
-              <p className="suave" style={{ margin: '8px 0 12px' }}>Estado: <span className="etiqueta">Pendiente de revisión</span></p>
-              <p className="suave" style={{ margin: '0 0 20px' }}>[Mensaje: te avisaremos por correo cuando la secretaría asigne la sección.]</p>
+              <p className="suave" style={{ margin: '8px 0 4px' }}>Estado: <span className="etiqueta">Pendiente de revisión</span></p>
+              <p className="suave" style={{ margin: '0 0 12px' }}>Sección provisional: <b>{resultado.seccion.grado}{resultado.seccion.letra}</b></p>
+              <p className="suave" style={{ margin: '0 0 20px' }}>[Mensaje: la secretaría confirmará la matrícula y la sección.]</p>
               <Link className="pbtn pbtn-p pbtn-ancho" to="/padre/notas">Ir a mi cuenta</Link>
             </div>
           )}

@@ -1,4 +1,5 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { borrarSesion, leerSesion } from '../api';
 import './panel.css';
 
 const FLECHA = (
@@ -10,7 +11,7 @@ const FLECHA = (
 function useCerrarSesion() {
   const navigate = useNavigate();
   return () => {
-    try { localStorage.removeItem('simae_sesion'); } catch { /* sin almacenamiento */ }
+    borrarSesion();
     navigate('/ingresar');
   };
 }
@@ -39,8 +40,10 @@ export function CabPadre() {
 }
 
 // Marco de escritorio: menú lateral + contenido (docente y director).
-export function PanelEscritorio({ titulo, rol, nombre, enlaces, children }) {
+export function PanelEscritorio({ titulo, rol, enlaces, children }) {
   const salir = useCerrarSesion();
+  const u = leerSesion()?.usuario;
+  const nombre = u ? `${u.nombre} ${u.apellido}` : '';
   return (
     <div className="panel">
       <div className="escritorio">

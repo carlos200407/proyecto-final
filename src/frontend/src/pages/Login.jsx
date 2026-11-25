@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { pedir } from '../api';
 import PanelMarca from '../componentes/PanelMarca';
 import './auth.css';
@@ -68,6 +69,11 @@ export default function Login({ onLogin }) {
           <button className="boton-principal" type="submit" disabled={cargando}>
             {cargando ? 'Ingresando...' : 'Iniciar sesión'}
           </button>
+
+          <p className="auth-ayuda" style={{ marginTop: 16 }}>
+            ¿Eres padre o madre de familia y aún no tienes cuenta?{' '}
+            <Link to="/registro">Crear cuenta</Link>
+          </p>
         </form>
       </section>
     </main>

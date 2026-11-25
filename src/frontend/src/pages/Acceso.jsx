@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import Login from './Login';
 import CambiarPassword from './CambiarPassword';
 import Inicio from './Inicio';
@@ -12,6 +12,7 @@ const PANEL_POR_ROL = {
   Docente: '/docente/notas',
   Director: '/director/dashboard',
 };
+const BASE_POR_ROL = { Padre: '/padre', Docente: '/docente', Director: '/director' };
 
 function leerSesion() {
   try {
@@ -24,6 +25,7 @@ function leerSesion() {
 
 // Es el App.jsx de antes: decide qué pantalla del sistema mostrar según la sesión.
 export default function Acceso() {
+  const { state } = useLocation();
   const [sesion, setSesion] = useState(leerSesion);
 
   function iniciarSesion(nuevaSesion) {
@@ -62,7 +64,10 @@ export default function Acceso() {
   // 3) Sesión normal: llevar a su panel
   const panel = PANEL_POR_ROL[sesion.usuario.rol];
   if (panel) {
-    return <Navigate to={panel} replace />;
+    // Si venía de una página protegida de SU rol (ej. /padre/matricula), vuelve a ella.
+    const desde = state?.desde;
+    const destino = desde && desde.startsWith(BASE_POR_ROL[sesion.usuario.rol]) ? desde : panel;
+    return <Navigate to={destino} replace />;
   }
 
   return <Inicio usuario={sesion.usuario} onSalir={cerrarSesion} />;

@@ -1,4 +1,5 @@
-export const API_URL = 'http://localhost:3000/api';
+export const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api';
+const CLAVE_SESION = 'simae_sesion';
 
 // Función única para hablar con el backend.
 // Devuelve los datos si todo sale bien, o lanza un Error con un mensaje legible.
@@ -19,7 +20,42 @@ export async function pedir(ruta, { metodo = 'GET', cuerpo, token } = {}) {
 
   const datos = await respuesta.json().catch(() => ({}));
   if (!respuesta.ok) {
-    throw new Error(datos.error || 'Ocurrió un error inesperado.');
+    const error = new Error(datos.error || 'Ocurrió un error inesperado.');
+    error.estado = respuesta.status;
+    throw error;
   }
   return datos;
+}
+
+// --- Sesión guardada en el navegador (la escribe Acceso.jsx al iniciar sesión) ---
+export function leerSesion() {
+  try {
+    const guardada = localStorage.getItem(CLAVE_SESION);
+    return guardada ? JSON.parse(guardada) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function borrarSesion() {
+  try {
+    localStorage.removeItem(CLAVE_SESION);
+  } catch {
+    /* sin almacenamiento */
+  }
+}
+
+// Igual que pedir(), pero agrega solo el token de la sesión.
+// Si el servidor responde 401 (token vencido), cierra la sesión y manda al login.
+export async function pedirAuth(ruta, opciones = {}) {
+  const sesion = leerSesion();
+  try {
+    return await pedir(ruta, { ...opciones, token: sesion?.token });
+  } catch (error) {
+    if (error.estado === 401) {
+      borrarSesion();
+      window.location.assign('/ingresar');
+    }
+    throw error;
+  }
 }

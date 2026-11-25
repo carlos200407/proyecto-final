@@ -6,10 +6,14 @@ async function obtenerNotasDeMatricula(req, res) {
         const pool = await conectarDB();
         const resultado = await pool.request()
             .input('id_mat', sql.Int, id_mat)
-            .query(`SELECT n.id_not, n.valor, ce.nombre AS criterio, c.id_cur, c.nombre AS curso
+            .query(`SELECT n.id_not, n.valor, ce.nombre AS criterio, c.id_cur, c.nombre AS curso,
+                           u.nombre AS nombre_docente, u.apellido AS apellido_docente
                     FROM NOTA n
+                    INNER JOIN MATRICULA m ON n.id_mat = m.id_mat
                     INNER JOIN CRITERIO_EVALUACION ce ON n.id_crit = ce.id_crit
                     INNER JOIN CURSO c ON ce.id_cur = c.id_cur
+                    LEFT JOIN SECCION_CURSO sc ON sc.id_sec = m.id_sec AND sc.id_cur = c.id_cur
+                    LEFT JOIN USUARIO u ON sc.docente_id = u.id_usu
                     WHERE n.id_mat = @id_mat
                     ORDER BY c.nombre, ce.nombre`);
         res.json(resultado.recordset);

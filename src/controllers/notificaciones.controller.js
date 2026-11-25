@@ -15,11 +15,13 @@ async function obtenerNotificacionesDeAlumno(req, res) {
 
 async function crearNotificacion(req, res) {
     try {
-        const { id_alu, tipo, mensaje, enviado_por } = req.body;
+        const { id_alu, tipo, mensaje } = req.body;
+        // Quien envía sale del token, no del cuerpo (antes se podía falsificar).
+        const enviado_por = req.usuario.id_usu;
 
-        if (!id_alu || !tipo || !mensaje || !enviado_por) {
+        if (!id_alu || !tipo || !mensaje) {
             return res.status(400).json({
-                error: 'Faltan campos obligatorios: id_alu, tipo, mensaje, enviado_por'
+                error: 'Faltan campos obligatorios: id_alu, tipo, mensaje'
             });
         }
 

@@ -74,4 +74,60 @@ async function cambiarPassword(req, res) {
     }
 }
 
-module.exports = { login, cambiarPassword };
+// Registro público de un padre de familia: crea USUARIO (rol Padre) + PADRE en una sola operación.
+async function registroPadre(req, res) {
+    const { nombre, apellido, dni, correo, password } = req.body;
+
+    if (!nombre || !apellido || !dni || !correo || !password) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios: nombre, apellido, dni, correo, password' });
+    }
+    if (!/^[0-9]{8}$/.test(dni)) {
+        return res.status(400).json({ error: 'El DNI debe tener 8 dígitos' });
+    }
+    if (password.length < 6) {
+        return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+    }
+
+    let tx;
+    try {
+        const pool = await conectarDB();
+        const hash = await bcrypt.hash(password, 10);
+
+        tx = new sql.Transaction(pool);
+        await tx.begin();
+
+        // primer_ingreso = 0: el padre eligió su propia contraseña, no hay que obligarlo a cambiarla.
+        const u = await new sql.Request(tx)
+            .input('nombre', sql.VarChar, nombre)
+            .input('apellido', sql.VarChar, apellido)
+            .input('correo', sql.VarChar, correo)
+            .input('hash', sql.VarChar, hash)
+            .query(`INSERT INTO USUARIO (nombre, apellido, correo, password_hash, rol, primer_ingreso)
+                    OUTPUT INSERTED.id_usu
+                    VALUES (@nombre, @apellido, @correo, @hash, 'Padre', 0)`);
+
+        await new sql.Request(tx)
+            .input('nombre', sql.VarChar, nombre)
+            .input('apellido', sql.VarChar, apellido)
+            .input('dni', sql.VarChar, dni)
+            .input('correo', sql.VarChar, correo)
+            .input('id_usu', sql.Int, u.recordset[0].id_usu)
+            .query(`INSERT INTO PADRE (nombre, apellido, dni, correo, id_usu)
+                    VALUES (@nombre, @apellido, @dni, @correo, @id_usu)`);
+
+        await tx.commit();
+        res.status(201).json({ mensaje: 'Cuenta creada. Ya puedes iniciar sesión.' });
+    } catch (error) {
+        if (tx) { try { await tx.rollback(); } catch { /* ya cerrada */ } }
+        const msg = error.message || '';
+        if (msg.includes('dbo.PADRE')) {
+            return res.status(409).json({ error: 'Ese DNI ya está registrado' });
+        }
+        if (msg.includes('UNIQUE') || msg.includes('duplicate')) {
+            return res.status(409).json({ error: 'Ese correo ya está registrado' });
+        }
+        res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports = { login, cambiarPassword, registroPadre };

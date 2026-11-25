@@ -1,0 +1,62 @@
+### Pruebas de los endpoints nuevos (REST Client). Orden sugerido.
+### Antes: ejecuta db/migracion_01_nivel_capacidad.sql y reinicia el servidor.
+
+### 1. Login como director (usa el correo/clave que tengas)
+# @name loginDir
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{ "correo": "director@colegio.pe", "password": "TU_CLAVE" }
+
+### 2. El director crea un docente (sin password: el servidor genera la clave temporal)
+POST http://localhost:3000/api/usuarios
+Content-Type: application/json
+Authorization: Bearer {{loginDir.response.body.token}}
+
+{ "nombre": "Pedro", "apellido": "Rojas", "correo": "pedro@colegio.pe", "rol": "Docente" }
+
+### 3. Crear sección (ahora con nivel y capacidad)
+POST http://localhost:3000/api/secciones
+Content-Type: application/json
+Authorization: Bearer {{loginDir.response.body.token}}
+
+{ "nivel": "Primaria", "grado": "3°", "letra": "A", "capacidad": 25 }
+
+### 4. Vacantes (pública, sin token)
+GET http://localhost:3000/api/secciones/vacantes
+
+### 5. Dashboard del director
+GET http://localhost:3000/api/dashboard/calificaciones
+Authorization: Bearer {{loginDir.response.body.token}}
+
+### 6. Registro público de un padre
+POST http://localhost:3000/api/auth/registro-padre
+Content-Type: application/json
+
+{ "nombre": "Rosa", "apellido": "Gómez", "dni": "12345678", "correo": "rosa@gmail.com", "password": "clave123" }
+
+### 7. Login como ese padre y ver su perfil con hijos
+# @name loginPadre
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{ "correo": "rosa@gmail.com", "password": "clave123" }
+
+###
+GET http://localhost:3000/api/padres/yo
+Authorization: Bearer {{loginPadre.response.body.token}}
+
+### 8. Matrícula en línea (queda 'Pendiente')
+POST http://localhost:3000/api/matriculas/en-linea
+Content-Type: application/json
+Authorization: Bearer {{loginPadre.response.body.token}}
+
+{ "nombre": "Luz", "apellido": "Gómez", "dni": "87654321", "nivel": "Primaria", "grado": "3°" }
+
+### 9. Debe dar 403: un padre NO puede ver la lista de usuarios ni notas de otro alumno
+GET http://localhost:3000/api/usuarios
+Authorization: Bearer {{loginPadre.response.body.token}}
+
+###
+GET http://localhost:3000/api/notas/matricula/1
+Authorization: Bearer {{loginPadre.response.body.token}}

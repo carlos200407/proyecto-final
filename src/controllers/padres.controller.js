@@ -1,4 +1,5 @@
 const { conectarDB, sql } = require('../config/db');
+const { ANIO_ACADEMICO, ANIO_MATRICULA } = require('../config/anio');
 
 async function obtenerPadres(req, res) {
     try {
@@ -70,4 +71,49 @@ async function obtenerHijosDePadre(req, res) {
     }
 }
 
-module.exports = { obtenerPadres, obtenerPadrePorId, crearPadre, obtenerHijosDePadre };
+// Datos del padre que inició sesión + sus hijos con todas sus matrículas.
+async function obtenerMiPerfil(req, res) {
+    try {
+        const pool = await conectarDB();
+        const padre = await pool.request()
+            .input('id_usu', sql.Int, req.usuario.id_usu)
+            .query('SELECT id_pad, nombre, apellido, dni, correo FROM PADRE WHERE id_usu = @id_usu');
+
+        if (padre.recordset.length === 0) {
+            return res.status(404).json({ error: 'Esta cuenta no tiene datos de apoderado registrados' });
+        }
+        const p = padre.recordset[0];
+
+        const filas = await pool.request()
+            .input('id_pad', sql.Int, p.id_pad)
+            .query(`SELECT a.id_alu, a.nombre, a.apellido, a.dni,
+                           m.id_mat, m.anio, m.estado,
+                           s.id_sec, s.nivel, s.grado, s.letra
+                    FROM ALUMNO a
+                    LEFT JOIN MATRICULA m ON m.id_alu = a.id_alu
+                    LEFT JOIN SECCION s ON m.id_sec = s.id_sec
+                    WHERE a.id_pad = @id_pad
+                    ORDER BY a.id_alu, m.anio DESC`);
+
+        const hijos = [];
+        for (const f of filas.recordset) {
+            let h = hijos.find((x) => x.id_alu === f.id_alu);
+            if (!h) {
+                h = { id_alu: f.id_alu, nombre: f.nombre, apellido: f.apellido, dni: f.dni, matriculas: [] };
+                hijos.push(h);
+            }
+            if (f.id_mat) {
+                h.matriculas.push({
+                    id_mat: f.id_mat, anio: f.anio, estado: f.estado,
+                    id_sec: f.id_sec, nivel: f.nivel, grado: f.grado, letra: f.letra
+                });
+            }
+        }
+
+        res.json({ padre: p, anio_academico: ANIO_ACADEMICO, anio_matricula: ANIO_MATRICULA, hijos });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports = { obtenerPadres, obtenerPadrePorId, crearPadre, obtenerHijosDePadre, obtenerMiPerfil };

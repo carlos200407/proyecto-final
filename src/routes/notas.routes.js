@@ -7,9 +7,10 @@ const {
     actualizarNota
 } = require('../controllers/notas.controller');
 const { verificarToken, verificarRol } = require('../middleware/auth.middleware');
+const { matriculaDelPadre } = require('../middleware/acceso.middleware');
 
-router.get('/matricula/:id_mat', verificarToken, obtenerNotasDeMatricula);
-router.get('/matricula/:id_mat/promedios', verificarToken, obtenerPromediosDeMatricula);
+router.get('/matricula/:id_mat', verificarToken, matriculaDelPadre, obtenerNotasDeMatricula);
+router.get('/matricula/:id_mat/promedios', verificarToken, matriculaDelPadre, obtenerPromediosDeMatricula);
 router.post('/', verificarToken, verificarRol('Docente'), crearNota);
 router.put('/:id', verificarToken, verificarRol('Docente'), actualizarNota);
 
