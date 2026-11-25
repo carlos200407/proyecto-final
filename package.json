@@ -7,6 +7,8 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "dev:todo": "concurrently -n back,front \"npm run dev\" \"npm --prefix src/frontend run dev\"",
+    "build": "npm --prefix src/frontend run build",
+    "demo": "npm run build && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
